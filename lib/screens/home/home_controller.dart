@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/uttils/appConstant.dart';
+import "package:collection/collection.dart";
+import 'package:intl/intl.dart';
 
 class HomeController extends GetxController{
 
@@ -17,6 +19,7 @@ class HomeController extends GetxController{
   late DatabaseReference blogDatabase ;
 
   int selectedIndex = 0;
+  RxString filterTag = "".obs;
 
   @override
   void onInit() async{
@@ -66,10 +69,10 @@ class HomeController extends GetxController{
 
      });
 
-     databaseReference.child("chirag@gmail.com").onValue.listen((event) {
-       print("counter update "+ event.snapshot.value.toString());
 
-     });
+     var blogDate = getFilterDateTime("2024-06-10 07:01:31.432435Z");
+     print("BlogDate"+ blogDate +" "+ DateTime.now().toUtc().toString());
+
    }
   deleteData() async{
     FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName).remove();
@@ -77,5 +80,30 @@ class HomeController extends GetxController{
 
    onItemTapped(int index) {
     selectedIndex = index;
+  }
+
+  getFilterDateTime(String blogDate) {
+    DateTime previousDate = changeDateFormate(DateTime.now().toString())
+        .subtract(const Duration(days: 1));
+    if(changeDateFormate(blogDate.toString()) == changeDateFormate(
+        DateTime.now().toString())){
+      filterTag.value = "Today";
+      filterTag.value = DateFormat('EEEE dd MMM').format(
+          DateTime.parse(blogDate.toString()));
+    }else if(changeDateFormate(blogDate.toString()) == previousDate){
+      filterTag.value = "YesterDay";
+    }else {
+      filterTag.value = DateFormat('EEEE dd MMM').format(
+          DateTime.parse(blogDate.toString()));
+    }
+    return filterTag.value;
+  }
+
+  DateTime changeDateFormate(String strDate) {
+    DateTime parseDate = DateFormat("yyyy-MM-dd").parse(strDate);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd-MM-yyyy');
+    var outputDate = outputFormat.format(inputDate);
+    return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
   }
 }

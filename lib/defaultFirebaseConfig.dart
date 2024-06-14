@@ -26,7 +26,7 @@ class DefaultFirebaseConfig {
       // Android
       return const FirebaseOptions(
         appId: '1:270673511910:android:233196ae8fc3e315e70227',
-        apiKey: 'AIzaSyD3YGtYubHhU_15YC4JRHoTW_TEqmGg2GI',
+        apiKey: 'AIzaSyAgUhHU8wSJgO5MVNy95tMT07NEjzMOfz0',
         projectId: 'loginwithfirebase',
         messagingSenderId: '431206013009',
         authDomain: 'loginwithfirebase.firebaseapp.com',

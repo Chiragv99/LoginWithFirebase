@@ -74,13 +74,13 @@ class TabBarScreen extends GetView<TabBarController>{
             icon: controller.selectedTabIndex.value == 0 ? Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp, color: Colors.white) : Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp),
           ),
           Tab(
-            icon: controller.selectedTabIndex.value == 1 ? Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp, color: Colors.white) : Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp),
+            icon: controller.selectedTabIndex.value == 1 ? Image.asset("${AppConstant.assestPath}addpost.png", width: 24.sp, height: 24.sp, color: Colors.white) : Image.asset("${AppConstant.assestPath}addpost.png", width: 24.sp, height: 24.sp),
           ),
           Tab(
-            icon: controller.selectedTabIndex.value == 2 ? Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp, color: Colors.white) : Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp),
+            icon: controller.selectedTabIndex.value == 2 ? Image.asset("${AppConstant.assestPath}profile_tab_icon.png", width: 24.sp, height: 24.sp, color: Colors.white) : Image.asset("${AppConstant.assestPath}profile_tab_icon.png", width: 24.sp, height: 24.sp),
           ),
           Tab(
-            icon: controller.selectedTabIndex.value == 3 ? Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp, color: Colors.white) : Image.asset("${AppConstant.assestPath}home_tab_icon.png", width: 24.sp, height: 24.sp),
+            icon: controller.selectedTabIndex.value == 3 ? Image.asset("${AppConstant.assestPath}setting.png", width: 24.sp, height: 24.sp, color: Colors.white) : Image.asset("${AppConstant.assestPath}setting.png", width: 24.sp, height: 24.sp),
           ),
         ]);
   }
