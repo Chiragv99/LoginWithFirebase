@@ -9,6 +9,8 @@ import 'package:loginwithfirebase/screens/post/post_binding.dart';
 import 'package:loginwithfirebase/screens/post/post_screen.dart';
 import 'package:loginwithfirebase/screens/registration/registration_binding.dart';
 import 'package:loginwithfirebase/screens/registration/registration_screen.dart';
+import 'package:loginwithfirebase/screens/setting/setting_binding.dart';
+import 'package:loginwithfirebase/screens/setting/setting_screen.dart';
 
 import '../screens/splash/splash_binding.dart';
 import '../screens/splash/splash_screen.dart';
@@ -20,6 +22,8 @@ class Routes{
   static String homeScreen = "/homeScreen";
   static String postScreen = "/postScreen";
   static String tabBarScreen = "/tabBarScreen";
+  static String settingScreen = "/settingScreen";
+
 
   static final routes = [
     GetPage(
@@ -51,6 +55,11 @@ class Routes{
         name: tabBarScreen,
         page: () => const TabBarScreen(),
         binding: TabBarBinding()
+    ),
+    GetPage(
+        name: settingScreen,
+        page: () =>  SettingScreen(),
+        binding: SettingBindings()
     ),
   ];
 }

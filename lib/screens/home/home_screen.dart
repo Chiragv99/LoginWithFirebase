@@ -26,7 +26,7 @@ class HomeScreen extends GetView<HomeController>{
         body: Padding(
             padding: const EdgeInsets.only(left: 10,right: 10,bottom: 20),
             child: FirebaseAnimatedList(
-              query: controller.blogDatabase,defaultChild: const Text("Loading.."),
+              query: controller.blogDatabase,defaultChild: setLoading(),
               itemBuilder: (context,snapshot,animation,index){
                 final id = snapshot.child('id').value.toString();
                 final image = snapshot.child('image').value.toString();
@@ -75,6 +75,25 @@ class HomeScreen extends GetView<HomeController>{
               },
             )
         ),
+      ),
+    );
+  }
+
+ Widget setLoading(){
+    return Container(
+      width: Get.width,
+      height: Get.height,
+      child:
+      const Center(
+        child:Column(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              height: 20,
+            ),
+            Text("Please Wait..")
+          ],
+        ) ,
       ),
     );
   }

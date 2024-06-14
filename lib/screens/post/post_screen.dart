@@ -40,11 +40,12 @@ class PostScreen extends GetView<PostController>{
               const SizedBox(
                 height: 20,
               ),
-              Obx(() => controller.isLoading.value == true ? const CircularProgressIndicator() : Container()),
               const SizedBox(
                 height: 20,
               ),
               chooseImageDiloaug(context),
+              const SizedBox(height: 20,),
+              Obx(() => controller.isLoading.value == true ? const CircularProgressIndicator() : Container()),
               const SizedBox(height: 20,),
               Obx(() => controller.isLoading.value == true ? SizedBox(
                 width: 200,
@@ -117,7 +118,7 @@ class PostScreen extends GetView<PostController>{
   }
 
   Widget chooseImageDiloaug(BuildContext context){
-    return  Center(
+    return Center(
       child: InkWell(
         onTap: () {
           showImagePickerDialogue(context);

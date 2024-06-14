@@ -35,7 +35,7 @@ class RegistrationScreen extends GetView<RegistrationController>{
                           style: ThemeColor.textStyle12px
                               .copyWith(fontSize: 20, color: Colors.black
                               ,fontWeight: FontWeight.bold)),
-                      SizedBox(height: 30,),
+                      const SizedBox(height: 30,),
                       SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child:  TextFormField(
@@ -84,7 +84,7 @@ class RegistrationScreen extends GetView<RegistrationController>{
                                 "${AppConstant.assestPath}lock.png",
                                 ThemeColor.textFieldBGStrokeColor, ThemeColor.textFieldBGColor),
                             validator: (password){
-                              return  Validation.validatePassword(password);
+                              return  Validation.validateInputText(password,"Password");
                             },
                           )
                       ),

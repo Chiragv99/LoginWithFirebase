@@ -21,7 +21,7 @@ class PostController extends GetxController{
   RxBool isLoading = RxBool(false);
 
   // Text Input Controller
-  final TextEditingController titleController = TextEditingController();
+   TextEditingController titleController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   final TextEditingController blogUrl = TextEditingController();
 
@@ -69,7 +69,7 @@ class PostController extends GetxController{
     final uid = user?.uid;
     final username = PreferenceUtils.getString(AppConstant.username,"");
 
-    print("Username"+ username);
+    print("image"+ image.toString());
 
     var title = titleController.text.toString().trim();
     var desc = descController.text.toString().trim();
@@ -78,6 +78,9 @@ class PostController extends GetxController{
     }
     else if(desc.isEmpty){
       Utils().toastMessage("Please Enter Desc");
+    }
+    else if(image == null){
+      Utils().toastMessage("Please Select Images");
     }
     else{
       isLoading.value = true;
@@ -123,7 +126,9 @@ class PostController extends GetxController{
   }
 
   void setDataBlank() {
-
+    titleController.clear();
+    descController.clear();
+    blogUrl.clear();
+    image = null;
   }
-
 }

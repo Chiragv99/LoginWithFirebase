@@ -32,7 +32,6 @@ class RegistrationController extends GetxController{
     var confirmPassword = confirmPasswordController.text.toString().trim();
     var password = passwordController.text.toString();
 
-
     if(userName.isEmpty){
       showSnakeBar(buildContext, "Please Enter Your Name!");
     }
@@ -87,6 +86,7 @@ void register(BuildContext context, String email, String password, RxBool isLoad
   }
   else{
     showSnakeBar(buildContext, message.toString());
+    Get.offAndToNamed(Routes.loginScreen);
   }
 
 }

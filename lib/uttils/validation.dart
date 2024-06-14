@@ -15,11 +15,7 @@ class Validation {
   }
 
   static String? validatePassword(String? value) {
-    const pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-    final regex = RegExp(pattern);
-
-    return value!.isNotEmpty && !regex.hasMatch(value)
-        ? 'Enter a valid password'
+    return value!.isNotEmpty ? 'Enter a valid password'
         : null;
   }
 
@@ -31,5 +27,17 @@ class Validation {
 
   static String? validateInputText(String? value, String title){
     return value!.isEmpty || value == "" ? 'Please Enter $title' : null ;
+  }
+
+  static String? isURLisValidOrNot(String? value, String title){
+    String pattern = r'(http|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?';
+    RegExp regExp = RegExp(pattern);
+    if (value!.isEmpty) {
+      return 'Please enter url';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid url';
+    }
+    return null;
   }
 }

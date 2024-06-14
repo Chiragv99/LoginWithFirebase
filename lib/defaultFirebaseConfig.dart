@@ -9,7 +9,7 @@ class DefaultFirebaseConfig {
       // Web
       return const FirebaseOptions(
         appId: '1:448618578101:web:0b650370bb29e29cac3efc',
-        apiKey: '',
+        apiKey: 'AIzaSyAgUhHU8wSJgO5MVNy95tMT07NEjzMOfz0',
         projectId: 'react-native-firebase-testing',
         messagingSenderId: '448618578101',
       );
@@ -17,7 +17,7 @@ class DefaultFirebaseConfig {
       // iOS and MacOS
       return const FirebaseOptions(
         appId: '1:448618578101:ios:0b650370bb29e29cac3efc',
-        apiKey: '',
+        apiKey: 'AIzaSyAgUhHU8wSJgO5MVNy95tMT07NEjzMOfz0',
         projectId: 'react-native-firebase-testing',
         messagingSenderId: '448618578101',
         iosBundleId: 'io.flutter.plugins.firebasecoreexample',
@@ -26,7 +26,7 @@ class DefaultFirebaseConfig {
       // Android
       return const FirebaseOptions(
         appId: '1:270673511910:android:233196ae8fc3e315e70227',
-        apiKey: '',
+        apiKey: 'AIzaSyD3YGtYubHhU_15YC4JRHoTW_TEqmGg2GI',
         projectId: 'loginwithfirebase',
         messagingSenderId: '431206013009',
         authDomain: 'loginwithfirebase.firebaseapp.com',
