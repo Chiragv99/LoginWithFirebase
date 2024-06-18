@@ -1,81 +1,109 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:loginwithfirebase/screens/setting/setting_controller.dart';
+import 'package:loginwithfirebase/uttils/theme_color.dart';
+import 'package:loginwithfirebase/uttils/uttils.dart';
+import 'package:loginwithfirebase/widget/common_widget.dart';
 
 import '../../uttils/appConstant.dart';
-import '../../uttils/theme_color.dart';
-import '../../widget/common_widget.dart';
 
 class SettingScreen extends GetView<SettingController>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child:
-      Container(
-        decoration: const BoxDecoration(color: ThemeColor.backgroundColor),
-        color: Colors.grey.shade300,
-        child:  Scaffold(
-           backgroundColor: ThemeColor.backgroundColor,
+    return Container(
+      color: ThemeColor.backgroundColor,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: ThemeColor.backgroundColor,
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.white,
             centerTitle: true,
-            leading: InkWell(
-              onTap: (){
-                Get.back();
-              },
-              child:Image.asset('${AppConstant.assestPathIcon}icon_back.png') ,
-            ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                labelTextRegular("profile_title".tr, 16, ThemeColor.darkTextColor)
+                labelTextRegular("Setting", 16, Colors.black),
               ],
             ),
           ),
-          body: SafeArea(child: Column(
-            children: [
-              Obx(() => buildCardDetail())
-            ],
-          )),
-        )
-      )),
+          body: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+            child: Container(
+              decoration: settingDecoration(),
+              child: buildSettingListView(controller),
+            ),
+          ),
+        ),
+      ),
     );
   }
-
 }
 
-Widget buildCarDetail(){
-  return SingleChildScrollView(
-    child: Padding(
-      padding: EdgeInsets.only(
-        left: 30.sp,
-        right: 30.sp
+Widget buildSettingListView(SettingController controller){
+  return Obx (() =>  ListView.separated(
+    separatorBuilder: (context,index) => Divider(
+      thickness: 1,
+      color:  ThemeColor.lightTextColor.withOpacity(.2),
+    ),
+    itemCount:  controller.listSettingData.length,
+    shrinkWrap: true,
+    primary: false,
+    itemBuilder: (context,index){
+      return GestureDetector(
+        onTap: (){},
+        child: buildSettingItem(index,context,controller),
+      );
+    },
+  ));
+}
+// Box Decoration for Setting
+BoxDecoration settingDecoration(){
+  return  BoxDecoration(
+    border:
+    Border.all(color: ThemeColor.disableColor, width: 0.1),
+    color: Colors.white,
+    borderRadius: const BorderRadius.all(
+      Radius.circular(10.0),
+    ),
+    boxShadow: const <BoxShadow>[
+      BoxShadow(
+        color: Colors.white,
+        blurRadius: 3.0,
+        offset: Offset(0.0, 3.0),
       ),
-      child: Column(
+    ],
+  );
+}
 
-        children: [
-          Center(
-            child: Container(
-              padding: EdgeInsets.all(5.sp),
-              decoration: BoxDecoration(
-                border: Border.all(color: ThemeColor.primaryColor),
-                borderRadius: BorderRadius.all(Radius.circular(90.r))
-              ),
-              child: SizedBox(
-                child: crea,
-              ),
+Widget buildSettingItem(int index, BuildContext context, SettingController controller){
+  return InkWell(
+    splashColor: ThemeColor.disableColor,
+    onTap: () {
+
+    },
+    child: Container(
+      padding: EdgeInsets.all(15),
+      margin: EdgeInsets.all(0.0),
+      child: SizedBox(
+        width: Get.width,
+        child: Row(
+          children: [
+            Image(image: AssetImage(AppConstant.assestPathIcon +
+                controller.listSettingData[index].icons)),
+            SizedBox(
+              width: 5.sp,
             ),
-          )
-        ],
+            Expanded(child:
+            labelTextLight(controller.listSettingData[index].titles, 10, ThemeColor.darkTextColor),),
+            controller.listSettingData[index].languageData != null ? labelTextBold(controller.listSettingData[index].languageData, 14, ThemeColor.lightTextColor) :
+            0.wSpace,
+          ],
+        ),
       ),
     ),
   );
 }
+

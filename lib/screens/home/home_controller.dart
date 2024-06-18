@@ -3,7 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/uttils/appConstant.dart';
-import "package:collection/collection.dart";
 import 'package:intl/intl.dart';
 
 class HomeController extends GetxController{

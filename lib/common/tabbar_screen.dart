@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/common/tabbar_controller.dart';
 import 'package:loginwithfirebase/screens/home/home_screen.dart';
-
+import 'package:loginwithfirebase/screens/myblog/myblog_screen.dart';
+import 'package:loginwithfirebase/screens/setting/setting_screen.dart';
 import '../screens/post/post_screen.dart';
 import '../uttils/appConstant.dart';
 import '../uttils/theme_color.dart';
@@ -27,8 +28,8 @@ class TabBarScreen extends GetView<TabBarController>{
             children:  [
               HomeScreen(),
               PostScreen(),
-              PostScreen(),
-              PostScreen(),
+              MyBlogScreen(),
+              SettingScreen(),
             ],
           ),
           bottomNavigationBar: buildTabContainer(context),

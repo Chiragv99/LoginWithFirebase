@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loginwithfirebase/auth/auth_services.dart';
 import 'package:loginwithfirebase/widget/common_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../routes/app_routes.dart';
 import '../../uttils/appConstant.dart';
 import '../../uttils/constant.dart';
