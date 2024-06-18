@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loginwithfirebase/uttils/appConstant.dart';
 import 'package:loginwithfirebase/widget/firebase_api.dart';
+import '../../models/setMyBlogModel.dart';
 import '../../uttils/preferenceUtils.dart';
 import '../../uttils/uttils.dart';
 import 'package:path/path.dart';
@@ -39,13 +40,27 @@ class PostController extends GetxController{
   File? file;
   RxString userId = RxString("");
   RxString userName = RxString("");
+  RxString buttonText = RxString("Upload Blog");
+
+   SetMyBlogModel? setMyBlogModel;
+
+
   @override
   void onInit() {
     super.onInit();
     isLoading = RxBool(false);
     userId.value = PreferenceUtils.getString(AppConstant.userId);
     userName.value = PreferenceUtils.getString(AppConstant.username);
-    print("UserId"+ userId.value.toString());
+    setMyBlogModel = Get.arguments;
+    if(setMyBlogModel != null){
+      print("UserId"+ setMyBlogModel!.title.toString());
+     /* titleController.text = setMyBlogModel.title.toString();
+      descController.text = setMyBlogModel.desc.toString();
+      buttonText.value = "Update Blog";*/
+    }
+    else{
+
+    }
   }
 
   // Upload Image from Gallery
@@ -64,7 +79,7 @@ class PostController extends GetxController{
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    final username = PreferenceUtils.getString(AppConstant.username,"");
+
 
     print("image"+ image.toString());
 
@@ -80,45 +95,14 @@ class PostController extends GetxController{
       Utils().toastMessage("Please Select Images");
     }
     else{
-      isLoading.value = true;
-      String id = DateTime.now().microsecondsSinceEpoch.toString();
-      final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
-
-
-      final fileName = basename(image!.path);
-      final destination = 'files/$fileName';
-      print("File$destination");
-
-      FirebaseStorage storage = FirebaseStorage.instance;
-      Reference ref = storage.ref().child("image1${DateTime.now()}");
-      UploadTask uploadTask = ref.putFile(image!);
-
-      task = FirebaseApi.uploadTask(destination, image!);
 
       print("UserId"+ uid.toString());
 
-      uploadTask.then((res) async{
-        var imageUrl = await ref.getDownloadURL();
-        blogDataRef.child(id).set({
-          'id': id,
-          'userId': userId.value.toString(),
-          'time':id,
-          'title': titleController.text.toString().trim(),
-          'desc': descController.text.toString().trim(),
-          'url': blogUrl.text.toString().trim(),
-          'image': imageUrl,
-          'name': username,
-        }).then((value) {
-          isLoading.value = false;
-          Utils().toastMessage("Post Upload Successfully!");
-          setDataBlank();
-          print("Post"+ "Post Addedd");
-        }).onError((error, stackTrace) {
-          isLoading.value = false;
-          print("Post"+ "Error");
-        });
-      });
-
+      if(setMyBlogModel != null){
+        updateData(setMyBlogModel!.blogId);
+      }else{
+        addBlogData();
+      }
     }
   }
 
@@ -127,5 +111,69 @@ class PostController extends GetxController{
     descController.clear();
     blogUrl.clear();
     image = null;
+  }
+
+  void updateData(String blogId) {
+    final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
+
+    if(image.isBlank == false){
+      final fileName = basename(image!.path);
+      final destination = 'files/$fileName';
+      print("File$destination");
+    }
+
+    blogDataRef.child(blogId).update({
+      'title': titleController.text,
+      'desc': descController.text,
+    }).then((value) {
+      print("Title"+ titleController.text.toString());
+      Utils().toastMessage("Post Update");
+      Get.back();
+    }).onError((error, stackTrace) {
+      Utils()
+          .toastMessage(error.toString());
+    });
+  }
+
+  void addBlogData() {
+    isLoading.value = true;
+    String id = DateTime.now().microsecondsSinceEpoch.toString();
+    final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
+
+    final username = PreferenceUtils.getString(AppConstant.username,"");
+
+
+    final fileName = basename(image!.path);
+    final destination = 'files/$fileName';
+    print("File$destination");
+
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child("image1${DateTime.now()}");
+    UploadTask uploadTask = ref.putFile(image!);
+
+    task = FirebaseApi.uploadTask(destination, image!);
+
+    uploadTask.then((res) async{
+      var imageUrl = await ref.getDownloadURL();
+      blogDataRef.child(id).set({
+        'id': id,
+        'userId': userId.value.toString(),
+        'time':id,
+        'title': titleController.text.toString().trim(),
+        'desc': descController.text.toString().trim(),
+        'url': blogUrl.text.toString().trim(),
+        'image': imageUrl,
+        'name': username,
+      }).then((value) {
+        isLoading.value = false;
+        Utils().toastMessage("Post Upload Successfully!");
+        setDataBlank();
+        print("Post"+ "Post Addedd");
+      }).onError((error, stackTrace) {
+        isLoading.value = false;
+        print("Post"+ "Error");
+      });
+    });
+
   }
 }

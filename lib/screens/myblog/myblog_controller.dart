@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loginwithfirebase/models/setMyBlogModel.dart';
 
+import '../../routes/app_routes.dart';
 import '../../uttils/appConstant.dart';
 import '../../uttils/preferenceUtils.dart';
 import '../../uttils/uttils.dart';
@@ -25,6 +26,7 @@ class MyBlogController extends GetxController{
 
   // For Set Blog Data
   RxList<SetMyBlogModel> listMyBlog = RxList([]);
+  late SetMyBlogModel setMyBlogModel ;
 
   @override
   void onInit() {
@@ -32,7 +34,10 @@ class MyBlogController extends GetxController{
     isLoading = RxBool(false);
     userId.value = PreferenceUtils.getString(AppConstant.userId);
     blogDatabase = FirebaseDatabase.instance.ref('Blog');
+  }
 
+  void editBlog(SetMyBlogModel setMyBlogModel) async{
+    Get.toNamed(Routes.postScreen,arguments: setMyBlogModel);
   }
 
   void deleteBlog(String blogId) async {

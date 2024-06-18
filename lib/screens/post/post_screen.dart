@@ -58,7 +58,7 @@ class PostScreen extends GetView<PostController>{
                 width: 200,
                 child:  RoundedButton(
                   isLoading: false,
-                  isEnable: true,text: "Upload Blog",onTap: controller.addBlog,
+                  isEnable: true,text: controller.buttonText.value,onTap: controller.addBlog,
                   fontSize: AppConstant.buttonSize,
                 ),
               )),

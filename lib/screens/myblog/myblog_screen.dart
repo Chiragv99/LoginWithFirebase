@@ -43,8 +43,7 @@ class MyBlogScreen extends GetView<MyBlogController>{
 
    getMyBlog(MyBlogController controller, BuildContext context) {
    return ListView.builder(
-       physics: const NeverScrollableScrollPhysics(),
-       shrinkWrap: true,
+       shrinkWrap: false,
        itemCount: controller.listMyBlog.value.length,
        itemBuilder: (BuildContext context, int index){
        return Container(
@@ -88,7 +87,8 @@ Widget setBlocData(SetMyBlogModel setMyBlogModel, BuildContext context, MyBlogCo
                 children: [
                   GestureDetector(
                     onTap: (){
-
+                       print("Edit"+"Edit" + setMyBlogModel.blogId);
+                       controller.editBlog(setMyBlogModel);
                     },
                     child: SizedBox(
                       width: 25,
