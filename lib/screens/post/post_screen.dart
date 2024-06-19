@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/screens/post/post_controller.dart';
 import 'package:loginwithfirebase/widget/common_widget.dart';
@@ -13,7 +14,11 @@ class PostScreen extends GetView<PostController>{
 
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+     return
+      FocusDetector(
+          onFocusGained: controller.getUserProfileImage(),
+          child:
+       Scaffold(
        appBar: AppBar(
          title: const Text("Upload Blogs"),
          centerTitle: true,
@@ -65,7 +70,7 @@ class PostScreen extends GetView<PostController>{
             ],
           ),
         ),
-       ));
+       )));
   }
 
   void showImagePickerDialogue(context) {

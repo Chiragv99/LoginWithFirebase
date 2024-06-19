@@ -32,7 +32,7 @@ class SettingScreen extends GetView<SettingController>{
           body: Padding(
             padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
             child: Container(
-              decoration: settingDecoration(),
+              decoration: backgroundDecoration(),
               child: buildSettingListView(controller),
             ),
           ),
@@ -59,24 +59,7 @@ Widget buildSettingListView(SettingController controller){
     },
   ));
 }
-// Box Decoration for Setting
-BoxDecoration settingDecoration(){
-  return  BoxDecoration(
-    border:
-    Border.all(color: ThemeColor.disableColor, width: 0.1),
-    color: Colors.white,
-    borderRadius: const BorderRadius.all(
-      Radius.circular(10.0),
-    ),
-    boxShadow: const <BoxShadow>[
-      BoxShadow(
-        color: Colors.white,
-        blurRadius: 3.0,
-        offset: Offset(0.0, 3.0),
-      ),
-    ],
-  );
-}
+
 
 Widget buildSettingItem(int index, BuildContext context, SettingController controller){
   return InkWell(

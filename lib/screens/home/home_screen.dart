@@ -13,6 +13,7 @@ class HomeScreen extends GetView<HomeController>{
     return FocusDetector(
        onFocusGained: (){
          controller.readData();
+         controller.getAllUserPost();
        },
       onFocusLost: (){},
       child:  Scaffold(
@@ -51,7 +52,14 @@ class HomeScreen extends GetView<HomeController>{
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(snapshot.child('name').value.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),),
+                            Row(
+                              children: [
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(snapshot.child('name').value.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),),
+                              ],
+                            ),
                             Text(snapshot.child('time').value.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),),
                           ],
                         ),
@@ -97,5 +105,7 @@ class HomeScreen extends GetView<HomeController>{
       ),
     );
   }
-
+  void getUserProfileImage(){
+    var profileImage = "";
+  }
 }

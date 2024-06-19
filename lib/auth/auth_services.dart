@@ -61,6 +61,7 @@ class AuthService {
     final addUserDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageUserData);
     addUserDataRef.child(userId).set({
       'id': id,
+      'userId': id,
       'username': name,
       'email': email,
       'profileImageUrl': ''

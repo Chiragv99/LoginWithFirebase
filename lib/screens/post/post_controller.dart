@@ -42,8 +42,9 @@ class PostController extends GetxController{
   RxString userName = RxString("");
   RxString buttonText = RxString("Upload Blog");
 
-   SetMyBlogModel? setMyBlogModel;
+  RxBool  isData = RxBool(false);
 
+  SetMyBlogModel? setMyBlogModel;
 
   @override
   void onInit() {
@@ -51,16 +52,14 @@ class PostController extends GetxController{
     isLoading = RxBool(false);
     userId.value = PreferenceUtils.getString(AppConstant.userId);
     userName.value = PreferenceUtils.getString(AppConstant.username);
-    setMyBlogModel = Get.arguments;
-    if(setMyBlogModel != null){
-      print("UserId"+ setMyBlogModel!.title.toString());
-     /* titleController.text = setMyBlogModel.title.toString();
-      descController.text = setMyBlogModel.desc.toString();
-      buttonText.value = "Update Blog";*/
+    isData.value = false;
+    isData.value = Get.arguments?['isData'] ?? false;
+    if(isData.value == true){
+      titleController.text = Get.arguments['title'];
+      print("IsData"+  Get.arguments['title']);
     }
-    else{
-
-    }
+    getUserProfileImage();
+   // print("IsData"+ isData.value.toString());
   }
 
   // Upload Image from Gallery
@@ -153,6 +152,8 @@ class PostController extends GetxController{
 
     task = FirebaseApi.uploadTask(destination, image!);
 
+
+
     uploadTask.then((res) async{
       var imageUrl = await ref.getDownloadURL();
       blogDataRef.child(id).set({
@@ -175,5 +176,30 @@ class PostController extends GetxController{
       });
     });
 
+  }
+
+   getUserProfileImage() async{
+    DatabaseReference  userDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageUserData);
+
+    Query query = userDatabase.orderByChild("userId").equalTo(userId.value);
+    DataSnapshot event = await query.get();
+
+    if(event.value != null){
+      Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
+      values.forEach((key, value) {
+        var email = value['profileImageUrl'].toString();
+        print("profileImageUrl"+ email);
+      });
+      if(values !=null){
+        isLoading.value = false;
+        print("Data"+ "Has Data");
+      }else{
+        isLoading.value = false;
+        print("Data"+ "No Data");
+      }
+    }else{
+      isLoading.value = false;
+      print("Data"+ "No Data");
+    }
   }
 }

@@ -21,7 +21,6 @@ class MyBlogController extends GetxController{
 
   RxString userId = RxString("");
 
-
   RxBool isLoading = RxBool(false);
 
   // For Set Blog Data
@@ -37,7 +36,7 @@ class MyBlogController extends GetxController{
   }
 
   void editBlog(SetMyBlogModel setMyBlogModel) async{
-    Get.toNamed(Routes.postScreen,arguments: setMyBlogModel);
+    Get.toNamed(Routes.postScreen,arguments:  {"isData": true,"title": "Test"});
   }
 
   void deleteBlog(String blogId) async {

@@ -4,6 +4,7 @@ import 'package:loginwithfirebase/common/tabbar_controller.dart';
 import 'package:loginwithfirebase/screens/home/home_controller.dart';
 import 'package:loginwithfirebase/screens/myblog/myblog_controller.dart';
 import 'package:loginwithfirebase/screens/post/post_controller.dart';
+import 'package:loginwithfirebase/screens/profile/profile_controller.dart';
 import 'package:loginwithfirebase/screens/setting/setting_controller.dart';
 
 import '../uttils/appConstant.dart';
@@ -16,6 +17,7 @@ class TabBarBinding extends Bindings{
     Get.lazyPut(() => HomeController());
     Get.lazyPut(() => PostController());
     Get.lazyPut(() => SettingController());
+    Get.lazyPut(() => ProfileController(getStorage: GetStorage(AppConstant.storageName)));
     Get.lazyPut(() => MyBlogController(getStorage: GetStorage(AppConstant.storageName)));
   }
 }

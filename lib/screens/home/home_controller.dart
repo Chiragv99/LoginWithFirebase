@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:loginwithfirebase/uttils/appConstant.dart';
 import 'package:intl/intl.dart';
 
+import '../../models/setMyBlogModel.dart';
+
 class HomeController extends GetxController{
 
   RxBool isLoading = RxBool(false);
@@ -20,13 +22,18 @@ class HomeController extends GetxController{
   int selectedIndex = 0;
   RxString filterTag = "".obs;
 
+
+  // For Set Blog Data
+  RxList<SetMyBlogModel> listMyBlog = RxList([]);
+  late SetMyBlogModel setMyBlogModel ;
+
+
   @override
   void onInit() async{
     super.onInit();
     isLoading = RxBool(false);
     blogDatabase = FirebaseDatabase.instance.ref('Blog');
     readData();
-
   }
 
   void addStudent() async{
@@ -68,7 +75,6 @@ class HomeController extends GetxController{
 
      });
 
-
      var blogDate = getFilterDateTime("2024-06-10 07:01:31.432435Z");
      print("BlogDate"+ blogDate +" "+ DateTime.now().toUtc().toString());
 
@@ -104,5 +110,42 @@ class HomeController extends GetxController{
     var outputFormat = DateFormat('dd-MM-yyyy');
     var outputDate = outputFormat.format(inputDate);
     return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
+  }
+
+  getAllUserPost() async{
+    isLoading.value = true;
+    blogDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
+
+    Query query = blogDatabase;
+    DataSnapshot event = await query.get();
+
+    if(event.value != null){
+      listMyBlog.value.clear();
+      Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
+      values.forEach((key, value) {
+
+        var userId = value['userId'].toString();
+        var blogTime = value['time'].toString();
+        var id = value['id'].toString();
+        var title = value['title'].toString();
+        var desc = value['desc'].toString();
+        var image = value['image'].toString();
+        var username = value['name'].toString();
+
+        print("UserName" + username.toString());
+      });
+      if(values !=null){
+        isLoading.value = false;
+        print("Data"+ "Has Data");
+      }else{
+        listMyBlog.value.clear();
+        isLoading.value = false;
+        print("Data"+ "No Data");
+      }
+    }else{
+      listMyBlog.value.clear();
+      isLoading.value = false;
+      print("Data"+ "No Data");
+    }
   }
 }
