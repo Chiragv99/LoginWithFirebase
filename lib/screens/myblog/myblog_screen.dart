@@ -47,20 +47,8 @@ class MyBlogScreen extends GetView<MyBlogController>{
        itemCount: controller.listMyBlog.value.length,
        itemBuilder: (BuildContext context, int index){
        return Container(
-         margin: const EdgeInsets.only(top: 5, right: 16, left: 16),
-         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-         decoration: BoxDecoration(
-           color: Colors.white,
-           borderRadius: const BorderRadius.all(Radius.circular(16)),
-           boxShadow: [
-             BoxShadow(
-               color: Colors.grey.withOpacity(0.5),
-               spreadRadius: 0,
-               blurRadius: 8,
-               offset: const Offset(0, 1),
-             ),
-           ],
-         ),
+         margin: const EdgeInsets.only(top: 0, right: 16, left: 16,bottom: 10),
+         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
          child:  setBlocData(controller.listMyBlog.value[index],context,controller),
        );
    });
@@ -68,7 +56,7 @@ class MyBlogScreen extends GetView<MyBlogController>{
 }
 
 Widget setBlocData(SetMyBlogModel setMyBlogModel, BuildContext context, MyBlogController controller){
-  return Padding(padding: const EdgeInsets.only(top: 10,left: 5,right: 5),child:
+  return Padding(padding: const EdgeInsets.only(top: 0,left: 0,right: 0),child:
   Card(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)),

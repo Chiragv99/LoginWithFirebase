@@ -39,3 +39,9 @@ BoxDecoration backgroundDecoration(){
     ],
   );
 }
+
+void isValidURL (String url){
+  if(url == null || url == ""){
+
+  }
+}

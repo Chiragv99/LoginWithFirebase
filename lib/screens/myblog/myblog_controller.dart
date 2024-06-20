@@ -36,7 +36,7 @@ class MyBlogController extends GetxController{
   }
 
   void editBlog(SetMyBlogModel setMyBlogModel) async{
-    Get.toNamed(Routes.postScreen,arguments:  {"isData": true,"title": "Test"});
+    Get.toNamed(Routes.postScreen,arguments:  {"isData": true,"title": setMyBlogModel.title,"desc": setMyBlogModel.desc,"url": ""});
   }
 
   void deleteBlog(String blogId) async {
@@ -58,8 +58,10 @@ class MyBlogController extends GetxController{
     userId.value = PreferenceUtils.getString(AppConstant.userId);
     blogDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
 
+
     Query query = blogDatabase.orderByChild("userId").equalTo(userId.value);
     DataSnapshot event = await query.get();
+
 
     if(event.value != null){
       listMyBlog.value.clear();
@@ -72,7 +74,7 @@ class MyBlogController extends GetxController{
         var image = value['image'].toString();
         var username = value['name'].toString();
 
-        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId.value, blogTime, id, title, desc, image,username);
+        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId.value, blogTime, id, title, desc, image,blogTime,"");
         listMyBlog.value.add(setMyBlogModel);
       });
       if(values !=null){

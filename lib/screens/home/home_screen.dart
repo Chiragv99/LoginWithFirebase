@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/screens/home/home_controller.dart';
 import 'package:focus_detector/focus_detector.dart';
+import 'package:loginwithfirebase/uttils/appConstant.dart';
+
+import '../../models/setMyBlogModel.dart';
 
 class HomeScreen extends GetView<HomeController>{
 
@@ -12,79 +15,18 @@ class HomeScreen extends GetView<HomeController>{
   Widget build(BuildContext context) {
     return FocusDetector(
        onFocusGained: (){
-         controller.readData();
+        // controller.readData();
          controller.getAllUserPost();
        },
       onFocusLost: (){},
-      child:  Scaffold(
-        appBar: AppBar(
-          title: const Text("Blog"),
-          centerTitle: true,
-          actions: [
-            IconButton(onPressed: (){}, icon: const Icon(Icons.add))
-          ],
-        ),
-        body: Padding(
-            padding: const EdgeInsets.only(left: 10,right: 10,bottom: 20),
-            child: FirebaseAnimatedList(
-              query: controller.blogDatabase,defaultChild: setLoading(),
-              itemBuilder: (context,snapshot,animation,index){
-                final id = snapshot.child('id').value.toString();
-                final image = snapshot.child('image').value.toString();
-                final time = snapshot.child("time").value.toString();
-                final title = snapshot.child("title").value.toString();
-                final description =
-                snapshot.child("description").value.toString();
-                final email = snapshot.child("email").value.toString();
-                final uid = snapshot.child('uid').value.toString();
-                return
-                  Padding(padding: const EdgeInsets.only(top: 10,left: 5,right: 5),child:
-                  Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 4,
-                  child: 
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child:  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(snapshot.child('name').value.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),),
-                              ],
-                            ),
-                            Text(snapshot.child('time').value.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(snapshot.child('title').value.toString(),style: const TextStyle(fontWeight: FontWeight.bold),),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(snapshot.child('desc').value.toString()),
-                        SizedBox(
-                          width: Get.width,
-                          height: Get.height /6,
-                          child:   Image.network(snapshot.child('image').value.toString(),fit: BoxFit.fitWidth,),
-                        )
-                      ],
-                    ),
-                  ),
-                ));
-              },
-            )
-        ),
-      ),
-    );
+      child:   MaterialApp(
+    home: Scaffold(
+    appBar: AppBar(
+    title: const Text('Firebase Data Example'),
+    ),
+    body:  Obx(() => controller.isLoading.value == true ? const CircularProgressIndicator() : getAllPost(controller,context)),
+    ),
+    ));
   }
 
  Widget setLoading(){
@@ -108,4 +50,66 @@ class HomeScreen extends GetView<HomeController>{
   void getUserProfileImage(){
     var profileImage = "";
   }
+
+
+  getAllPost(HomeController controller, BuildContext context) {
+    return ListView.builder(
+        shrinkWrap: false,
+        itemCount: controller.listAllBlog.value.length,
+        itemBuilder: (BuildContext context, int index){
+          return Container(
+            margin: const EdgeInsets.only(top: 0, right: 16, left: 16,bottom: 10),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+            child:  setAllPostData(controller.listAllBlog.value[index],context,controller),
+          );
+        });
+  }
+}
+Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeController controller){
+  return Padding(padding: const EdgeInsets.only(top: 0,left: 0,right: 0),child:
+  Card(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10)),
+    elevation: 4,
+    child:
+    Padding(
+      padding: const EdgeInsets.all(10),
+      child:  Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: setMyBlogModel.profileImage == null || setMyBlogModel.profileImage == "" ? CircleAvatar(child: Image.asset("${AppConstant.assestPath}userimage.png")) : CircleAvatar(child: Image.network(setMyBlogModel.profileImage!!))),
+                  SizedBox(width: 10,),
+                  Text(setMyBlogModel.userName.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)
+                ],
+              ),
+              Text(setMyBlogModel.blogTime.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(setMyBlogModel.title.toString(),style: const TextStyle(fontWeight: FontWeight.bold),),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(setMyBlogModel.desc.toString()),
+          SizedBox(
+            width: Get.width,
+            height: Get.height /6,
+            child:   Image.network(setMyBlogModel.image!,fit: BoxFit.fitWidth,),
+          )
+        ],
+      ),
+    ),
+  ));
 }

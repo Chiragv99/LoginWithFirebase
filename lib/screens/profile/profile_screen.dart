@@ -109,7 +109,7 @@ Widget buildVehicleDetail(int index, BuildContext context, ProfileController con
     onTap: () {
       if (index == 0) {
        print("Pos"+"Pos");
-       Get.offNamed(Routes.myBlog);
+       Get.toNamed(Routes.myBlog,arguments:  {"isData": true,"title": "Test"});
       }
       if(index == 3){
         print("Logout""Logout");
@@ -125,15 +125,15 @@ Widget buildVehicleDetail(int index, BuildContext context, ProfileController con
             children: [
               Image(
                   image: AssetImage(AppConstant.assestPathIcon +
-                      controller.listProfileData[index].icons)),
+                      controller.listProfileData[index].icons) ),
               15.wSpace,
               Expanded(
                 child: labelTextLight(controller.listProfileData[index].titles, 14,
                     ThemeColor.darkTextColor),
               ),
-              controller.listProfileData[index].languageData != null ?
-              labelTextBold(controller.listProfileData[index].languageData, 14, ThemeColor.lightTextColor) :
-              0.wSpace,
+              controller.totalMyPost.value > 0 ?
+              labelTextBold( controller.totalMyPost.value.toString(), 14, ThemeColor.lightTextColor) :
+              0.hSpace
             ],
           )),
     ),

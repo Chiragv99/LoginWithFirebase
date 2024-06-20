@@ -29,8 +29,6 @@ class PostController extends GetxController{
   // Database Refrences
   late DatabaseReference blogDatabase ;
 
-  XFile? imageData;
-
 
   File? image;
   final picker = ImagePicker();
@@ -40,6 +38,7 @@ class PostController extends GetxController{
   File? file;
   RxString userId = RxString("");
   RxString userName = RxString("");
+  RxString userProfileImage = RxString("");
   RxString buttonText = RxString("Upload Blog");
 
   RxBool  isData = RxBool(false);
@@ -164,6 +163,7 @@ class PostController extends GetxController{
         'desc': descController.text.toString().trim(),
         'url': blogUrl.text.toString().trim(),
         'image': imageUrl,
+        'profileImage': userProfileImage.value.toString(),
         'name': username,
       }).then((value) {
         isLoading.value = false;
@@ -178,7 +178,7 @@ class PostController extends GetxController{
 
   }
 
-   getUserProfileImage() async{
+  Future getUserProfileImage() async{
     DatabaseReference  userDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageUserData);
 
     Query query = userDatabase.orderByChild("userId").equalTo(userId.value);
@@ -186,13 +186,11 @@ class PostController extends GetxController{
 
     if(event.value != null){
       Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
-      values.forEach((key, value) {
-        var email = value['profileImageUrl'].toString();
-        print("profileImageUrl"+ email);
-      });
       if(values !=null){
-        isLoading.value = false;
-        print("Data"+ "Has Data");
+        values.forEach((key, value) {
+          userProfileImage.value = value['profileImageUrl'].toString();
+          print("ProfileImage"+ userProfileImage.toString());
+        });
       }else{
         isLoading.value = false;
         print("Data"+ "No Data");

@@ -28,8 +28,6 @@ class ProfileController extends GetxController{
     SetProfileData("icon_privacy.png", "My Blog".tr,  null)
   ]);
 
-
-
   File? image;
   final picker = ImagePicker();
 
@@ -43,6 +41,10 @@ class ProfileController extends GetxController{
   // For User Data
   RxString userId = RxString("");
   RxString userName = RxString("");
+  RxInt  totalMyPost = RxInt(0);
+
+  // Database Refrences
+  late DatabaseReference blogDatabase ;
 
   @override
   void onInit() {
@@ -51,6 +53,7 @@ class ProfileController extends GetxController{
     isImage.value = false;
     userId.value = PreferenceUtils.getString(AppConstant.userId);
     userName.value = PreferenceUtils.getString(AppConstant.username,"");
+    getTotalPostCount();
   }
 
   // Upload Image from Gallery
@@ -78,6 +81,7 @@ class ProfileController extends GetxController{
       }).then((value) {
         isLoading.value = false;
         Utils().toastMessage("Post Upload Successfully!");
+        updateUserProfileInBlog(imageUrl);
         print("Post"+ "Post Addedd");
       }).onError((error, stackTrace) {
         isLoading.value = false;
@@ -94,4 +98,54 @@ class ProfileController extends GetxController{
     isImage.value = true;
   }
 
+  updateUserProfileInBlog(String imageUrl) async{
+    DatabaseReference  userDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
+
+    Query query = userDatabase.orderByChild("userId").equalTo(userId.value);
+    DataSnapshot event = await query.get();
+
+    if(event.value != null){
+      Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
+      if(values !=null){
+        values.forEach((key, value) {
+
+          updateProfileImageInBlog(imageUrl, value['id'].toString());
+        });
+      }else{
+        isLoading.value = false;
+        print("Data"+ "No Data");
+      }
+    }else{
+      isLoading.value = false;
+      print("Data"+ "No Data");
+    }
+  }
+
+  void updateProfileImageInBlog(String imageUrl, String userId) async{
+
+    final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
+    blogDataRef.child(userId).update({
+      'profileImage': imageUrl
+    }).then((value) {
+      print("ProfileImage"+ 'Updated');
+    }).onError((error, stackTrace) {
+      print("ProfileImage"+ 'Erro');
+    });
+  }
+
+  void getTotalPostCount() async{
+    blogDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
+
+    Query query = blogDatabase.orderByChild("userId").equalTo(userId.value);
+    DataSnapshot event = await query.get();
+
+    if(event.value != null){
+      Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
+      var list = values.values.toList();
+      if(list !=null){
+        totalMyPost.value = list.length;
+      }
+      print("TotalPost"+ list.length.toString());
+    }
+  }
 }

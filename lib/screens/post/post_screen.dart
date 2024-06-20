@@ -16,7 +16,6 @@ class PostScreen extends GetView<PostController>{
   Widget build(BuildContext context) {
      return
       FocusDetector(
-          onFocusGained: controller.getUserProfileImage(),
           child:
        Scaffold(
        appBar: AppBar(
@@ -128,7 +127,9 @@ class PostScreen extends GetView<PostController>{
         onTap: () {
           showImagePickerDialogue(context);
         },
-        child: Container(
+        child:
+
+        Container(
           height: Get.height * 0.2,
           width: Get.width * 0.9,
           decoration: BoxDecoration(

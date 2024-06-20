@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -23,8 +24,9 @@ class HomeController extends GetxController{
   RxString filterTag = "".obs;
 
 
+
   // For Set Blog Data
-  RxList<SetMyBlogModel> listMyBlog = RxList([]);
+  RxList<SetMyBlogModel> listAllBlog = RxList([]);
   late SetMyBlogModel setMyBlogModel ;
 
 
@@ -33,52 +35,8 @@ class HomeController extends GetxController{
     super.onInit();
     isLoading = RxBool(false);
     blogDatabase = FirebaseDatabase.instance.ref('Blog');
-    readData();
   }
 
-  void addStudent() async{
-
-    String id = DateTime.now().microsecondsSinceEpoch.toString();
-    var studentData = FirebaseDatabase.instance.ref('${AppConstant.firebaseStorageName}/hamid/$id');
-
-    var firstName = firstNameController.text.toString().trim();
-    var lastName = lastNameController.text.toString().trim();
-    var email = emailController.text.toString().trim();
-    var phone =  phoneController.text.toString().trim();
-
-    await Future.value(studentData).then((value) async{
-       studentData.set({
-         "name": "$firstName $lastName",
-         "email": email,
-         "phone": phone
-       }).then((value) => {
-         print("Data"+ "Added")
-       }).onError((error, stackTrace) => {
-         print("Data"+  error.toString())
-       });
-    });
-  }
-
-   readData() async{
-
-     DatabaseReference databaseReference =  FirebaseDatabase.instance.ref(AppConstant.firebaseStorageUserData);
-     Query query = databaseReference.orderByChild('1718263629505252');
-
-     query.once().then((value) => {
-     if (value != null) {
-         print('Data')
-       //  print(value.snapshot.child("email").value)
-       } else {
-        print('No data found.')
-     }
-     }).onError((error, stackTrace) => {
-
-     });
-
-     var blogDate = getFilterDateTime("2024-06-10 07:01:31.432435Z");
-     print("BlogDate"+ blogDate +" "+ DateTime.now().toUtc().toString());
-
-   }
   deleteData() async{
     FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName).remove();
   }
@@ -87,7 +45,7 @@ class HomeController extends GetxController{
     selectedIndex = index;
   }
 
-  getFilterDateTime(String blogDate) {
+  getFilterDateTime(DateTime blogDate) {
     DateTime previousDate = changeDateFormate(DateTime.now().toString())
         .subtract(const Duration(days: 1));
     if(changeDateFormate(blogDate.toString()) == changeDateFormate(
@@ -120,7 +78,7 @@ class HomeController extends GetxController{
     DataSnapshot event = await query.get();
 
     if(event.value != null){
-      listMyBlog.value.clear();
+      listAllBlog.value.clear();
       Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
       values.forEach((key, value) {
 
@@ -131,21 +89,58 @@ class HomeController extends GetxController{
         var desc = value['desc'].toString();
         var image = value['image'].toString();
         var username = value['name'].toString();
+        var profileImage = value['profileImage'].toString();
 
         print("UserName" + username.toString());
+
+
+
+        var now = new DateTime.now();
+        var parseDate = getFilterDateTime(now);
+
+        print("ParseDate"+ parseDate.toString());
+
+        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId, blogTime, id, title, desc, image,username,profileImage);
+        listAllBlog.value.add(setMyBlogModel);
       });
       if(values !=null){
         isLoading.value = false;
         print("Data"+ "Has Data");
       }else{
-        listMyBlog.value.clear();
+        listAllBlog.value.clear();
         isLoading.value = false;
         print("Data"+ "No Data");
       }
     }else{
-      listMyBlog.value.clear();
+      listAllBlog.value.clear();
       isLoading.value = false;
       print("Data"+ "No Data");
     }
+  }
+
+}
+
+DateTime changeDateFormate(String strDate) {
+  DateTime parseDate = DateFormat("yyyy-MM-dd").parse(strDate);
+  var inputDate = DateTime.parse(parseDate.toString());
+  var outputFormat = DateFormat('dd-MM-yyyy');
+  var outputDate = outputFormat.format(inputDate);
+  return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
+}
+
+
+getFilterDateTime(String strBlogDate,String parseDate) {
+  DateTime previousDate = changeDateFormate(DateTime.now().toString())
+      .subtract(const Duration(days: 1));
+  if(changeDateFormate(strBlogDate.toString()) == changeDateFormate(
+      DateTime.now().toString())){
+    return parseDate = "Today";
+    print("Date"+ "Today");
+  }else if(changeDateFormate(strBlogDate.toString()) == previousDate){
+    parseDate = "YesterDay";
+    return print("Date"+ "YesterDay");
+  }else {
+    return parseDate = DateFormat('EEEE dd MMM').format(
+        DateTime.parse(strBlogDate));
   }
 }
