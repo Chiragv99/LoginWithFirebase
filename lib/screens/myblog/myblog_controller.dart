@@ -58,10 +58,8 @@ class MyBlogController extends GetxController{
     userId.value = PreferenceUtils.getString(AppConstant.userId);
     blogDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
 
-
     Query query = blogDatabase.orderByChild("userId").equalTo(userId.value);
     DataSnapshot event = await query.get();
-
 
     if(event.value != null){
       listMyBlog.value.clear();

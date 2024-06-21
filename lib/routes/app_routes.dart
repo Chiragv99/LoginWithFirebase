@@ -5,6 +5,8 @@ import 'package:loginwithfirebase/screens/home/home_binding.dart';
 import 'package:loginwithfirebase/screens/home/home_screen.dart';
 import 'package:loginwithfirebase/screens/login/login_binding.dart';
 import 'package:loginwithfirebase/screens/login/login_screen.dart';
+import 'package:loginwithfirebase/screens/myblog/blogDetail/blogdetail_binding.dart';
+import 'package:loginwithfirebase/screens/myblog/blogDetail/blogdetail_screen.dart';
 import 'package:loginwithfirebase/screens/myblog/myblog_binding.dart';
 import 'package:loginwithfirebase/screens/myblog/myblog_screen.dart';
 import 'package:loginwithfirebase/screens/post/post_binding.dart';
@@ -29,6 +31,7 @@ class Routes{
   static String settingScreen = "/settingScreen";
   static String profileScreen = "/profileScreen";
   static String myBlog = "/myblogscreen";
+  static String blogDetail = "/blogDetail";
 
   static final routes = [
     GetPage(
@@ -75,6 +78,11 @@ class Routes{
         name: myBlog,
         page: () =>  MyBlogScreen(),
         binding: MyblogBinding()
+    ),
+    GetPage(
+        name: blogDetail,
+        page: () =>  BlogDetailScreen(),
+        binding: BlogDetailBindings()
     ),
   ];
 }

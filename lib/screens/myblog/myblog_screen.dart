@@ -8,9 +8,6 @@ import 'package:loginwithfirebase/models/setMyBlogModel.dart';
 import 'package:loginwithfirebase/screens/myblog/myblog_controller.dart';
 
 import '../../uttils/appConstant.dart';
-
-
-
 class MyBlogScreen extends GetView<MyBlogController>{
   MyBlogScreen({Key? key}) : super(key: key);
 

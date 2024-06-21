@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/screens/profile/profile_controller.dart';
 import 'package:loginwithfirebase/uttils/theme_color.dart';
@@ -16,7 +17,10 @@ class ProfileScreen extends  GetView<ProfileController>{
 
   @override
   Widget build(BuildContext context) {
-    return    Container(
+    return
+      FocusDetector(
+          child:
+      Container(
         decoration: const BoxDecoration(color: ThemeColor.backgroundColor),
         child: Scaffold(
           backgroundColor: ThemeColor.backgroundColor,
@@ -26,7 +30,7 @@ class ProfileScreen extends  GetView<ProfileController>{
                 children: [buildCarDetail(controller,context)],
               )),
         ),
-    );
+    ));
   }
 }
 

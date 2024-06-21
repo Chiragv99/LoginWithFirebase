@@ -78,7 +78,6 @@ class PostController extends GetxController{
     final User? user = auth.currentUser;
     final uid = user?.uid;
 
-
     print("image"+ image.toString());
 
     var title = titleController.text.toString().trim();
@@ -124,7 +123,7 @@ class PostController extends GetxController{
       'title': titleController.text,
       'desc': descController.text,
     }).then((value) {
-      print("Title"+ titleController.text.toString());
+      print("Title${titleController.text}");
       Utils().toastMessage("Post Update");
       Get.back();
     }).onError((error, stackTrace) {
@@ -140,7 +139,6 @@ class PostController extends GetxController{
 
     final username = PreferenceUtils.getString(AppConstant.username,"");
 
-
     final fileName = basename(image!.path);
     final destination = 'files/$fileName';
     print("File$destination");
@@ -151,14 +149,14 @@ class PostController extends GetxController{
 
     task = FirebaseApi.uploadTask(destination, image!);
 
-
-
+    var currentTime = DateTime.now();
+    print("CurrentTime" + currentTime.toString());
     uploadTask.then((res) async{
       var imageUrl = await ref.getDownloadURL();
       blogDataRef.child(id).set({
         'id': id,
         'userId': userId.value.toString(),
-        'time':id,
+        'time':currentTime.toString(),
         'title': titleController.text.toString().trim(),
         'desc': descController.text.toString().trim(),
         'url': blogUrl.text.toString().trim(),

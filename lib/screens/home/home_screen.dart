@@ -16,7 +16,7 @@ class HomeScreen extends GetView<HomeController>{
     return FocusDetector(
        onFocusGained: (){
         // controller.readData();
-         controller.getAllUserPost();
+       //  controller.getAllUserPost();
        },
       onFocusLost: (){},
       child:   MaterialApp(
@@ -57,10 +57,17 @@ class HomeScreen extends GetView<HomeController>{
         shrinkWrap: false,
         itemCount: controller.listAllBlog.value.length,
         itemBuilder: (BuildContext context, int index){
-          return Container(
-            margin: const EdgeInsets.only(top: 0, right: 16, left: 16,bottom: 10),
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-            child:  setAllPostData(controller.listAllBlog.value[index],context,controller),
+          return GestureDetector(
+            onTap: (){
+              SetMyBlogModel setMyBlogModel = controller.listAllBlog[index];
+              controller.redirectToBlogDetail(setMyBlogModel);
+              print("Post"+ index.toString());
+            },
+            child:  Container(
+              margin: const EdgeInsets.only(top: 0, right: 16, left: 16,bottom: 10),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              child:  setAllPostData(controller.listAllBlog.value[index],context,controller),
+            ),
           );
         });
   }
@@ -88,7 +95,7 @@ Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeC
                       width: 30,
                       height: 30,
                       child: setMyBlogModel.profileImage == null || setMyBlogModel.profileImage == "" ? CircleAvatar(child: Image.asset("${AppConstant.assestPath}userimage.png")) : CircleAvatar(child: Image.network(setMyBlogModel.profileImage!!))),
-                  SizedBox(width: 10,),
+                  const SizedBox(width: 10,),
                   Text(setMyBlogModel.userName.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)
                 ],
               ),
@@ -98,11 +105,11 @@ Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeC
           const SizedBox(
             height: 10,
           ),
-          Text(setMyBlogModel.title.toString(),style: const TextStyle(fontWeight: FontWeight.bold),),
+          Text(setMyBlogModel.title.toString(), maxLines: 1 ,style: const TextStyle(fontWeight: FontWeight.bold),),
           const SizedBox(
             height: 10,
           ),
-          Text(setMyBlogModel.desc.toString()),
+          Text(setMyBlogModel.desc.toString(),maxLines: 2),
           SizedBox(
             width: Get.width,
             height: Get.height /6,
