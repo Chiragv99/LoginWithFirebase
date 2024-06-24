@@ -59,20 +59,20 @@ class HomeScreen extends GetView<HomeController>{
         itemBuilder: (BuildContext context, int index){
           return GestureDetector(
             onTap: (){
-              SetMyBlogModel setMyBlogModel = controller.listAllBlog[index];
-              controller.redirectToBlogDetail(setMyBlogModel);
+            //  SetMyBlogModel setMyBlogModel = controller.listAllBlog[index];
+           //
               print("Post"+ index.toString());
             },
             child:  Container(
               margin: const EdgeInsets.only(top: 0, right: 16, left: 16,bottom: 10),
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-              child:  setAllPostData(controller.listAllBlog.value[index],context,controller),
+              child:  setAllPostData(controller.listAllBlog.value[index],context,controller,index),
             ),
           );
         });
   }
 }
-Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeController controller){
+Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeController controller, int index){
   return Padding(padding: const EdgeInsets.only(top: 0,left: 0,right: 0),child:
   Card(
     shape: RoundedRectangleBorder(
@@ -84,36 +84,52 @@ Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeC
       child:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: setMyBlogModel.profileImage == null || setMyBlogModel.profileImage == "" ? CircleAvatar(child: Image.asset("${AppConstant.assestPath}userimage.png")) : CircleAvatar(child: Image.network(setMyBlogModel.profileImage!!))),
-                  const SizedBox(width: 10,),
-                  Text(setMyBlogModel.userName.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)
-                ],
-              ),
-              Text(setMyBlogModel.blogTime.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)
-            ],
+          InkWell(
+            onTap: (){
+              print("Tap"+ "Profile" +setMyBlogModel.userId.toString());
+              controller.redirectToProfile(setMyBlogModel);
+            },
+            child:  Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: setMyBlogModel.profileImage == null || setMyBlogModel.profileImage == "" ? CircleAvatar(child: Image.asset("${AppConstant.assestPath}userimage.png")) : CircleAvatar(child: Image.network(setMyBlogModel.profileImage!!))),
+                    const SizedBox(width: 10,),
+                    Text(setMyBlogModel.userName.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)
+                  ],
+                ),
+                Text(setMyBlogModel.blogTime.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)
+              ],
+            ),
           ),
           const SizedBox(
             height: 10,
           ),
-          Text(setMyBlogModel.title.toString(), maxLines: 1 ,style: const TextStyle(fontWeight: FontWeight.bold),),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(setMyBlogModel.desc.toString(),maxLines: 2),
-          SizedBox(
-            width: Get.width,
-            height: Get.height /6,
-            child:   Image.network(setMyBlogModel.image!,fit: BoxFit.fitWidth,),
+          GestureDetector(
+            onTap: (){
+              print("Tap"+ "Column");
+              controller.redirectToBlogDetail(setMyBlogModel);
+            },
+            child:    Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(setMyBlogModel.title.toString(), maxLines: 1 ,style: const TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(setMyBlogModel.desc.toString(),maxLines: 2),
+                SizedBox(
+                  width: Get.width,
+                  height: Get.height /6,
+                  child:   Image.network(setMyBlogModel.image!,fit: BoxFit.fitWidth,),
+                )
+              ],
+            ),
           )
         ],
       ),

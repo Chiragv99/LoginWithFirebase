@@ -11,12 +11,14 @@ import 'package:loginwithfirebase/screens/myblog/myblog_binding.dart';
 import 'package:loginwithfirebase/screens/myblog/myblog_screen.dart';
 import 'package:loginwithfirebase/screens/post/post_binding.dart';
 import 'package:loginwithfirebase/screens/post/post_screen.dart';
+import 'package:loginwithfirebase/screens/profile/otherprofile/otherprofile_binding.dart';
 import 'package:loginwithfirebase/screens/profile/profile_screen.dart';
 import 'package:loginwithfirebase/screens/registration/registration_binding.dart';
 import 'package:loginwithfirebase/screens/registration/registration_screen.dart';
 import 'package:loginwithfirebase/screens/setting/setting_binding.dart';
 import 'package:loginwithfirebase/screens/setting/setting_screen.dart';
 
+import '../screens/profile/otherprofile/otherprofile_screen.dart';
 import '../screens/profile/profile_binding.dart';
 import '../screens/splash/splash_binding.dart';
 import '../screens/splash/splash_screen.dart';
@@ -32,6 +34,8 @@ class Routes{
   static String profileScreen = "/profileScreen";
   static String myBlog = "/myblogscreen";
   static String blogDetail = "/blogDetail";
+  static String otherprofile = "/OtherProfile";
+
 
   static final routes = [
     GetPage(
@@ -83,6 +87,11 @@ class Routes{
         name: blogDetail,
         page: () =>  BlogDetailScreen(),
         binding: BlogDetailBindings()
+    ),
+    GetPage(
+        name: otherprofile,
+        page: () =>  OtherUserProfileScreen(),
+        binding: OtherProfileBinding()
     ),
   ];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:loginwithfirebase/uttils/theme_color.dart';
 
 class Utils {
@@ -44,4 +45,30 @@ void isValidURL (String url){
   if(url == null || url == ""){
 
   }
+}
+
+getFilterDateTime(DateTime blogDate, String filterTag) {
+  DateTime previousDate = changeDateFormate(DateTime.now().toString())
+      .subtract(const Duration(days: 1));
+  if(changeDateFormate(blogDate.toString()) == changeDateFormate(
+      DateTime.now().toString())){
+    filterTag = "Today";
+    filterTag =  DateFormat('HH:MM a').format(
+        DateTime.parse(blogDate.toString()));
+  }else if(changeDateFormate(blogDate.toString()) == previousDate){
+    filterTag = "YesterDay: ${DateFormat('HH:MM a').format(
+        DateTime.parse(blogDate.toString()))}";
+  }else {
+    filterTag = DateFormat('EEEE dd MMM').format(
+        DateTime.parse(blogDate.toString()));
+  }
+  return filterTag;
+}
+
+DateTime changeDateFormate(String strDate) {
+  DateTime parseDate = DateFormat("yyyy-MM-dd").parse(strDate);
+  var inputDate = DateTime.parse(parseDate.toString());
+  var outputFormat = DateFormat('dd-MM-yyyy');
+  var outputDate = outputFormat.format(inputDate);
+  return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
 }

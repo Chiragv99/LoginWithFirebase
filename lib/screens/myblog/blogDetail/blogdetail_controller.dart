@@ -110,7 +110,11 @@ class BlogDetailController extends GetxController{
            username = value['username'].toString();
         }
 
-        SetMyBlogComment setMyBlogComment = SetMyBlogComment(id,blogId,userId,commentUserId,comment,blogTime,image,username);
+        DateTime dateTime = DateTime.parse(blogTime);
+        var parseDate = "";
+         parseDate = getFilterDateTime(dateTime,parseDate);
+
+        SetMyBlogComment setMyBlogComment = SetMyBlogComment(id,blogId,userId,commentUserId,comment,parseDate,image,username);
         listBlogComment.value.add(setMyBlogComment);
         print("Comment"+ comment + " "+listBlogComment.length.toString());
       });

@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../models/setProfileData.dart';
 import '../../uttils/appConstant.dart';
 import '../../uttils/preferenceUtils.dart';
@@ -25,7 +24,8 @@ class ProfileController extends GetxController{
   ProfileController({required this.getStorage});
 
   RxList<SetProfileData> listProfileData = RxList([
-    SetProfileData("icon_privacy.png", "My Blog".tr,  null)
+    SetProfileData("icon_privacy.png", "My Blog".tr,  null,),
+    SetProfileData("icon_privacy.png", "Follow Request".tr,  null,)
   ]);
 
   File? image;
@@ -42,6 +42,7 @@ class ProfileController extends GetxController{
   RxString userId = RxString("");
   RxString userName = RxString("");
   RxInt  totalMyPost = RxInt(0);
+  RxInt  totalFollowRequest = RxInt(0);
 
   // Database Refrences
   late DatabaseReference blogDatabase ;
@@ -54,6 +55,12 @@ class ProfileController extends GetxController{
     userId.value = PreferenceUtils.getString(AppConstant.userId);
     userName.value = PreferenceUtils.getString(AppConstant.username,"");
     getTotalPostCount();
+    getTotalFollowRequestCount();
+
+    if(Get.arguments == true){
+      var isArgument = true;
+      print("Argument"+ isArgument.toString());
+    }
   }
 
   // Upload Image from Gallery
@@ -129,7 +136,7 @@ class ProfileController extends GetxController{
     }).then((value) {
       print("ProfileImage"+ 'Updated');
     }).onError((error, stackTrace) {
-      print("ProfileImage"+ 'Erro');
+      print("ProfileImage"+ 'Error');
     });
   }
 
@@ -145,7 +152,24 @@ class ProfileController extends GetxController{
       if(list !=null){
         totalMyPost.value = list.length;
       }
-      print("TotalPost"+ list.length.toString());
+      print("""TotalPost"""+ list.length.toString());
     }
+  }
+
+  void getTotalFollowRequestCount() async{
+
+   var sendFollowRequestDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageUserFollowData);
+
+    Query query = sendFollowRequestDatabase.orderByChild("senderId").equalTo(userId.value);
+    DataSnapshot event = await query.get();
+
+   if(event.value != null){
+     Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
+     var list = values.values.toList();
+     if(list !=null){
+       totalFollowRequest.value = list.length;
+     }
+     print("""TotalReceive"""+ list.length.toString());
+   }
   }
 }

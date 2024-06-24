@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../models/setMyBlogModel.dart';
 import '../../routes/app_routes.dart';
+import '../../uttils/uttils.dart';
 
 class HomeController extends GetxController{
 
@@ -49,30 +50,8 @@ class HomeController extends GetxController{
     Get.toNamed(Routes.blogDetail,arguments:  setMyBlogModel);
   }
 
-  getFilterDateTime(DateTime blogDate) {
-    DateTime previousDate = changeDateFormate(DateTime.now().toString())
-        .subtract(const Duration(days: 1));
-    if(changeDateFormate(blogDate.toString()) == changeDateFormate(
-        DateTime.now().toString())){
-      filterTag.value = "Today";
-      filterTag.value =  DateFormat('HH:MM a').format(
-          DateTime.parse(blogDate.toString()));
-    }else if(changeDateFormate(blogDate.toString()) == previousDate){
-      filterTag.value = "YesterDay: ${DateFormat('HH:MM a').format(
-          DateTime.parse(blogDate.toString()))}";
-    }else {
-      filterTag.value = DateFormat('EEEE dd MMM').format(
-          DateTime.parse(blogDate.toString()));
-    }
-    return filterTag.value;
-  }
-
-  DateTime changeDateFormate(String strDate) {
-    DateTime parseDate = DateFormat("yyyy-MM-dd").parse(strDate);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy');
-    var outputDate = outputFormat.format(inputDate);
-    return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
+  redirectToProfile(SetMyBlogModel setMyBlogModel){
+    Get.toNamed(Routes.otherprofile,arguments: {"name": setMyBlogModel.userName,"userId": setMyBlogModel.userId,"profileImage": setMyBlogModel.profileImage});
   }
 
   getAllUserPost() async{
@@ -99,7 +78,8 @@ class HomeController extends GetxController{
         print("UserName$username");
 
         DateTime dateTime = DateTime.parse(blogTime);
-        var parseDate = getFilterDateTime(dateTime);
+        var parseDate = "";
+         parseDate = getFilterDateTime(dateTime,parseDate);
 
         print("ParseDate$parseDate");
 
@@ -129,20 +109,4 @@ DateTime changeDateFormate(String strDate) {
   var outputFormat = DateFormat('dd-MM-yyyy');
   var outputDate = outputFormat.format(inputDate);
   return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
-}
-
-
-getFilterDateTime(String strBlogDate,String parseDate) {
-  DateTime previousDate = changeDateFormate(DateTime.now().toString())
-      .subtract(const Duration(days: 1));
-  if(changeDateFormate(strBlogDate.toString()) == changeDateFormate(
-      DateTime.now().toString())){
-    return parseDate = "Today";
-  }else if(changeDateFormate(strBlogDate.toString()) == previousDate){
-    parseDate = "YesterDay";
-    return print("Date"+ "YesterDay");
-  }else {
-    return parseDate = DateFormat('EEEE dd MMM').format(
-        DateTime.parse(strBlogDate));
-  }
 }

@@ -65,7 +65,10 @@ Widget buildSettingItem(int index, BuildContext context, SettingController contr
   return InkWell(
     splashColor: ThemeColor.disableColor,
     onTap: () {
-
+      if(index == 4){
+        controller.showLogoutAlertDiloaug(context);
+      }
+     print("Index"+ index.toString());
     },
     child: Container(
       padding: EdgeInsets.all(15),
@@ -89,4 +92,3 @@ Widget buildSettingItem(int index, BuildContext context, SettingController contr
     ),
   );
 }
-
