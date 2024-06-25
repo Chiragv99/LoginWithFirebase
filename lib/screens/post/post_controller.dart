@@ -149,8 +149,11 @@ class PostController extends GetxController{
 
     task = FirebaseApi.uploadTask(destination, image!);
 
+
+    var blogComment = [];
+    var blogLike  = [];
+
     var currentTime = DateTime.now();
-    print("CurrentTime" + currentTime.toString());
     uploadTask.then((res) async{
       var imageUrl = await ref.getDownloadURL();
       blogDataRef.child(id).set({
@@ -163,6 +166,8 @@ class PostController extends GetxController{
         'image': imageUrl,
         'profileImage': userProfileImage.value.toString(),
         'name': username,
+        'comment': blogComment.toString(),
+        'like': blogLike,
       }).then((value) {
         isLoading.value = false;
         Utils().toastMessage("Post Upload Successfully!");

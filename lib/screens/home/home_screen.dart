@@ -1,5 +1,7 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/screens/home/home_controller.dart';
 import 'package:focus_detector/focus_detector.dart';
@@ -127,7 +129,10 @@ Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeC
                   width: Get.width,
                   height: Get.height /6,
                   child:   Image.network(setMyBlogModel.image!,fit: BoxFit.fitWidth,),
-                )
+                ),
+                Divider(thickness: 1),
+                SizedBox(height: 10),
+                getLikeCommentShareWidget(setMyBlogModel,controller)
               ],
             ),
           )
@@ -135,4 +140,89 @@ Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeC
       ),
     ),
   ));
+}
+
+Widget getLikeCommentShareWidget(SetMyBlogModel setMyBlogModel, HomeController controller){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      GestureDetector(
+        onTap: (){
+          print("Like"+ "Like");
+          addPostLike(setMyBlogModel,controller);
+        },
+        child: Row(
+          children: [
+            Icon(FontAwesomeIcons.thumbsUp,
+            size: 18,),
+            SizedBox(width: 5,),
+            Text(setMyBlogModel.totalLikes.toString())
+          ],
+        ),
+      ),
+      GestureDetector(
+        onTap: (){
+
+        },
+        child: Row(
+          children: [
+            Icon(FontAwesomeIcons.comment,
+              size: 18,),
+            SizedBox(width: 5,),
+            Text(setMyBlogModel.totalComments.toString())
+          ],
+        ),
+      ),
+      GestureDetector(
+        onTap: (){
+
+        },
+        child: Row(
+          children: [
+            Icon(FontAwesomeIcons.bookmark,
+              size: 18,),
+            SizedBox(width: 5,)
+          ],
+        ),
+      ),
+      GestureDetector(
+        onTap: (){
+
+        },
+        child: Row(
+          children: [
+            Icon(FontAwesomeIcons.shareAlt,
+              size: 18,),
+            SizedBox(width: 5,)
+          ],
+        ),
+      )
+    ],
+  );
+}
+
+void addPostLike(SetMyBlogModel setMyBlogModel, HomeController controller) {
+
+  var blogLike = [];
+  blogLike = setMyBlogModel.blogLikeId;
+  final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageName);
+
+  var tempOutput = List<String>.from(blogLike);
+
+  if(tempOutput.contains(controller.userId.value)){
+    tempOutput.removeWhere((item) => item == controller.userId.value);
+  }else{
+    tempOutput.add(controller.userId.value);
+  }
+
+
+  print("Blog"+ tempOutput.toString());
+  blogDataRef.child(setMyBlogModel.blogId).update({
+    'like': tempOutput
+  }).then((value) {
+   print("AddLike"+ "Add Like");
+  }).onError((error, stackTrace) {
+    print("AddLike$error");
+  });
 }

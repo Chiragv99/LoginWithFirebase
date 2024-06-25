@@ -11,6 +11,8 @@ import 'package:loginwithfirebase/screens/myblog/myblog_binding.dart';
 import 'package:loginwithfirebase/screens/myblog/myblog_screen.dart';
 import 'package:loginwithfirebase/screens/post/post_binding.dart';
 import 'package:loginwithfirebase/screens/post/post_screen.dart';
+import 'package:loginwithfirebase/screens/profile/followrequest/folllowrequest_screen.dart';
+import 'package:loginwithfirebase/screens/profile/followrequest/followrequest_binding.dart';
 import 'package:loginwithfirebase/screens/profile/otherprofile/otherprofile_binding.dart';
 import 'package:loginwithfirebase/screens/profile/profile_screen.dart';
 import 'package:loginwithfirebase/screens/registration/registration_binding.dart';
@@ -35,7 +37,7 @@ class Routes{
   static String myBlog = "/myblogscreen";
   static String blogDetail = "/blogDetail";
   static String otherprofile = "/OtherProfile";
-
+  static String followrequest = "/FollowRequestScreen";
 
   static final routes = [
     GetPage(
@@ -92,6 +94,11 @@ class Routes{
         name: otherprofile,
         page: () =>  OtherUserProfileScreen(),
         binding: OtherProfileBinding()
+    ),
+    GetPage(
+        name: followrequest,
+        page: () =>  FollowRequestScreen(),
+        binding: FollowRequestBindings()
     ),
   ];
 }

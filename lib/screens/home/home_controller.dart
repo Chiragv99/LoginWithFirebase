@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 
 import '../../models/setMyBlogModel.dart';
 import '../../routes/app_routes.dart';
+import '../../uttils/preferenceUtils.dart';
 import '../../uttils/uttils.dart';
 
 class HomeController extends GetxController{
@@ -29,10 +32,12 @@ class HomeController extends GetxController{
   RxList<SetMyBlogModel> listAllBlog = RxList([]);
   late SetMyBlogModel setMyBlogModel ;
 
+  RxString userId = RxString("");
 
   @override
   void onInit() async{
     super.onInit();
+    userId.value = PreferenceUtils.getString(AppConstant.userId);
     isLoading = RxBool(false);
     blogDatabase = FirebaseDatabase.instance.ref('Blog');
     getAllUserPost();
@@ -74,16 +79,16 @@ class HomeController extends GetxController{
         var image = value['image'].toString();
         var username = value['name'].toString();
         var profileImage = value['profileImage'].toString();
-
-        print("UserName$username");
+        var totalLike = [] ;
+        if(value['like'] != null){
+          totalLike = value['like'];
+        }
 
         DateTime dateTime = DateTime.parse(blogTime);
         var parseDate = "";
          parseDate = getFilterDateTime(dateTime,parseDate);
 
-        print("ParseDate$parseDate");
-
-        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId, parseDate, id, title, desc, image,username,profileImage);
+        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId, parseDate, id, title, desc, image,username,profileImage,totalLike.length,0,totalLike);
         listAllBlog.value.add(setMyBlogModel);
       });
       if(values !=null){

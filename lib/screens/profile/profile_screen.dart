@@ -115,9 +115,8 @@ Widget buildVehicleDetail(int index, BuildContext context, ProfileController con
        print("Pos"+"Pos");
        Get.toNamed(Routes.myBlog,arguments:  {"isData": true,"title": "Test"});
       }
-      if(index == 3){
-        print("Logout""Logout");
-
+      if(index == 1){
+        Get.toNamed(Routes.followrequest,arguments:  {"isData": true,"title": "Test"});
       }
     },
     child: Container(
