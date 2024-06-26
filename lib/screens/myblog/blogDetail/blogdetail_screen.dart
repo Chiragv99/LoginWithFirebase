@@ -24,7 +24,7 @@ class BlogDetailScreen extends GetView<BlogDetailController>{
   }
 
   Widget getMainContent(BuildContext context){
-   return Padding(padding: EdgeInsets.only(left: 15,right: 10,bottom: 10),child:
+   return Padding(padding: const EdgeInsets.only(left: 15,right: 10,bottom: 10),child:
      Stack(
      children: <Widget>[
        Padding(padding: EdgeInsets.only(bottom: Get.height / 9,left: 10,right: 10),child:
@@ -119,7 +119,7 @@ class BlogDetailScreen extends GetView<BlogDetailController>{
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 20,),
+        const SizedBox(height: 20,),
         labelTextBold("Comments", 5.sp, Colors.red.shade200),
         getCommentWidget(controller,context)
       ],
@@ -155,7 +155,7 @@ return  SizedBox(
           ),
           Text(listBlogComment.blogTime.toString(),style: const TextStyle(fontWeight: FontWeight.normal,fontSize: 8),),
         ]),
-          SizedBox(height: 5,),
+          const SizedBox(height: 5,),
           labelTextRegular(strComment, 4.sp, Colors.black)
         ],
       ),

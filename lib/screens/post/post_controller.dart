@@ -166,7 +166,7 @@ class PostController extends GetxController{
         'image': imageUrl,
         'profileImage': userProfileImage.value.toString(),
         'name': username,
-        'comment': blogComment.toString(),
+        'comment': blogComment,
         'like': blogLike,
       }).then((value) {
         isLoading.value = false;

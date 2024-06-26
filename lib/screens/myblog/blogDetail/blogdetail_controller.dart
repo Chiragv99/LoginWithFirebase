@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -81,9 +83,7 @@ class BlogDetailController extends GetxController{
   }
 
   void getBlogDetail() async{
-
     isLoading.value = true;
-
     DatabaseReference  blogCommentDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageBlogComment);
 
     Query query = blogCommentDatabase.orderByChild("blogId").equalTo(setMyBlogModel.blogId);
@@ -116,7 +116,7 @@ class BlogDetailController extends GetxController{
 
         SetMyBlogComment setMyBlogComment = SetMyBlogComment(id,blogId,userId,commentUserId,comment,parseDate,image,username);
         listBlogComment.value.add(setMyBlogComment);
-        print("Comment"+ comment + " "+listBlogComment.length.toString());
+        print("Comment$comment ${listBlogComment.length}");
       });
       if(values !=null){
        // listBlogComment.clear();

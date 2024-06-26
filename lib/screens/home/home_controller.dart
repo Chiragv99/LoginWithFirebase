@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -69,7 +67,7 @@ class HomeController extends GetxController{
     if(event.value != null){
       listAllBlog.value.clear();
       Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
-      values.forEach((key, value) {
+      values.forEach((key, value) async {
 
         var userId = value['userId'].toString();
         var blogTime = value['time'].toString();
@@ -80,15 +78,43 @@ class HomeController extends GetxController{
         var username = value['name'].toString();
         var profileImage = value['profileImage'].toString();
         var totalLike = [] ;
+        var totalComment = [] ;
         if(value['like'] != null){
           totalLike = value['like'];
+        }
+        if(value['comment'] != null){
+          totalComment = value['comment'];
+        }
+
+
+        final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageBlogComment);
+        Query query = blogDataRef.orderByChild("blogId").equalTo(id);
+        DataSnapshot event = await query.get();
+
+
+        var totalCommentLength = 0;
+        if(event.value != null){
+          Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
+          if(values !=null){
+            totalCommentLength = values.length;
+            print("Data"+ values.length.toString());
+          }else{
+            print("Data"+ "No Data");
+          }
+        }else{
+          print("Data"+ "No Data");
         }
 
         DateTime dateTime = DateTime.parse(blogTime);
         var parseDate = "";
          parseDate = getFilterDateTime(dateTime,parseDate);
 
-        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId, parseDate, id, title, desc, image,username,profileImage,totalLike.length,0,totalLike);
+         var isLiked = false;
+         if(totalLike.isNotEmpty && totalLike.contains(this.userId.value)){
+           isLiked = true;
+         }
+
+        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId, parseDate, id, title, desc, image,username,profileImage,totalLike.length,totalCommentLength,totalLike,totalComment,isLiked);
         listAllBlog.value.add(setMyBlogModel);
       });
       if(values !=null){

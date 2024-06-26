@@ -72,7 +72,7 @@ class MyBlogController extends GetxController{
         var image = value['image'].toString();
         var username = value['name'].toString();
 
-        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId.value, blogTime, id, title, desc, image,blogTime,"",0,0,[]);
+        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId.value, blogTime, id, title, desc, image,blogTime,"",0,0,[],[],false);
         listMyBlog.value.add(setMyBlogModel);
       });
       if(values !=null){

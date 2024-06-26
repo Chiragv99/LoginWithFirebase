@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,7 @@ class HomeScreen extends GetView<HomeController>{
   }
 
  Widget setLoading(){
-    return Container(
+    return SizedBox(
       width: Get.width,
       height: Get.height,
       child:
@@ -50,7 +49,6 @@ class HomeScreen extends GetView<HomeController>{
     );
   }
   void getUserProfileImage(){
-    var profileImage = "";
   }
 
 
@@ -63,7 +61,7 @@ class HomeScreen extends GetView<HomeController>{
             onTap: (){
             //  SetMyBlogModel setMyBlogModel = controller.listAllBlog[index];
            //
-              print("Post"+ index.toString());
+              print("Post$index");
             },
             child:  Container(
               margin: const EdgeInsets.only(top: 0, right: 16, left: 16,bottom: 10),
@@ -130,8 +128,8 @@ Widget setAllPostData(SetMyBlogModel setMyBlogModel, BuildContext context, HomeC
                   height: Get.height /6,
                   child:   Image.network(setMyBlogModel.image!,fit: BoxFit.fitWidth,),
                 ),
-                Divider(thickness: 1),
-                SizedBox(height: 10),
+                const Divider(thickness: 1),
+                const SizedBox(height: 10),
                 getLikeCommentShareWidget(setMyBlogModel,controller)
               ],
             ),
@@ -154,9 +152,10 @@ Widget getLikeCommentShareWidget(SetMyBlogModel setMyBlogModel, HomeController c
         },
         child: Row(
           children: [
-            Icon(FontAwesomeIcons.thumbsUp,
+              Icon( setMyBlogModel.isLiked == false ?
+              FontAwesomeIcons.thumbsUp :  FontAwesomeIcons.solidThumbsUp,
             size: 18,),
-            SizedBox(width: 5,),
+            const SizedBox(width: 5,),
             Text(setMyBlogModel.totalLikes.toString())
           ],
         ),
@@ -167,9 +166,9 @@ Widget getLikeCommentShareWidget(SetMyBlogModel setMyBlogModel, HomeController c
         },
         child: Row(
           children: [
-            Icon(FontAwesomeIcons.comment,
+            const Icon(FontAwesomeIcons.comment,
               size: 18,),
-            SizedBox(width: 5,),
+            const SizedBox(width: 5,),
             Text(setMyBlogModel.totalComments.toString())
           ],
         ),
@@ -178,7 +177,7 @@ Widget getLikeCommentShareWidget(SetMyBlogModel setMyBlogModel, HomeController c
         onTap: (){
 
         },
-        child: Row(
+        child: const Row(
           children: [
             Icon(FontAwesomeIcons.bookmark,
               size: 18,),
@@ -190,7 +189,7 @@ Widget getLikeCommentShareWidget(SetMyBlogModel setMyBlogModel, HomeController c
         onTap: (){
 
         },
-        child: Row(
+        child: const Row(
           children: [
             Icon(FontAwesomeIcons.shareAlt,
               size: 18,),
@@ -211,13 +210,15 @@ void addPostLike(SetMyBlogModel setMyBlogModel, HomeController controller) {
   var tempOutput = List<String>.from(blogLike);
 
   if(tempOutput.contains(controller.userId.value)){
-    tempOutput.removeWhere((item) => item == controller.userId.value);
+   // tempOutput.removeWhere((item) => item == controller.userId.value);
+    tempOutput.removeAt(0);
   }else{
     tempOutput.add(controller.userId.value);
   }
 
+  print("Contain" + tempOutput.contains(controller.userId.value).toString());
 
-  print("Blog"+ tempOutput.toString());
+  print("Blog$tempOutput");
   blogDataRef.child(setMyBlogModel.blogId).update({
     'like': tempOutput
   }).then((value) {
