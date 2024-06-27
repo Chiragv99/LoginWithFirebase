@@ -54,7 +54,7 @@ class HomeController extends GetxController{
   }
 
   redirectToProfile(SetMyBlogModel setMyBlogModel){
-    Get.toNamed(Routes.otherprofile,arguments: {"name": setMyBlogModel.userName,"userId": setMyBlogModel.userId,"profileImage": setMyBlogModel.profileImage});
+    Get.toNamed(Routes.otherProfile,arguments: {"name": setMyBlogModel.userName,"userId": setMyBlogModel.userId,"profileImage": setMyBlogModel.profileImage});
   }
 
   getAllUserPost() async{
@@ -86,25 +86,22 @@ class HomeController extends GetxController{
           totalComment = value['comment'];
         }
 
-
-        final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageBlogComment);
+        /*final blogDataRef = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageBlogComment);
         Query query = blogDataRef.orderByChild("blogId").equalTo(id);
         DataSnapshot event = await query.get();
-
 
         var totalCommentLength = 0;
         if(event.value != null){
           Map<dynamic, dynamic> values = event.value as Map<dynamic, dynamic>;
           if(values !=null){
             totalCommentLength = values.length;
-            print("Data"+ values.length.toString());
           }else{
             print("Data"+ "No Data");
           }
         }else{
           print("Data"+ "No Data");
         }
-
+*/
         DateTime dateTime = DateTime.parse(blogTime);
         var parseDate = "";
          parseDate = getFilterDateTime(dateTime,parseDate);
@@ -114,9 +111,10 @@ class HomeController extends GetxController{
            isLiked = true;
          }
 
-        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId, parseDate, id, title, desc, image,username,profileImage,totalLike.length,totalCommentLength,totalLike,totalComment,isLiked);
+        SetMyBlogModel setMyBlogModel = SetMyBlogModel(userId, parseDate, id, title, desc, image,username,profileImage,totalLike.length,0,totalLike,totalComment,isLiked);
         listAllBlog.value.add(setMyBlogModel);
       });
+
       if(values !=null){
         isLoading.value = false;
         print("Data"+ "Has Data");
@@ -126,12 +124,38 @@ class HomeController extends GetxController{
         print("Data"+ "No Data");
       }
     }else{
-      listAllBlog.value.clear();
+   //   listAllBlog.value.clear();
       isLoading.value = false;
       print("Data"+ "No Data");
     }
   }
 
+  saveBlog(SetMyBlogModel setMyBlogModel) async{
+
+    String id = DateTime.now().microsecondsSinceEpoch.toString();
+    var blogDatabase = FirebaseDatabase.instance.ref(AppConstant.firebaseStorageUserSavedBlog);
+
+    blogDatabase.child(id).set({
+      'id': id,
+      'userId': userId.value,
+      'time':setMyBlogModel.blogTime,
+      'title': setMyBlogModel.title,
+      'desc': setMyBlogModel.desc,
+      'url': "",
+      'image': setMyBlogModel.image,
+      'profileImage': setMyBlogModel.profileImage,
+      'name': "",
+      'comment': selectedIndex,
+      'like': setMyBlogModel.isLiked,
+    }).then((value) {
+      isLoading.value = false;
+      Utils().toastMessage("Post Upload Successfully!");
+      print("Post"+ "Post Addedd");
+    }).onError((error, stackTrace) {
+      isLoading.value = false;
+      print("Post"+ "Error");
+    });
+  }
 }
 
 DateTime changeDateFormate(String strDate) {
@@ -140,4 +164,8 @@ DateTime changeDateFormate(String strDate) {
   var outputFormat = DateFormat('dd-MM-yyyy');
   var outputDate = outputFormat.format(inputDate);
   return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
+}
+
+void _sendMessage() async {
+
 }

@@ -26,7 +26,7 @@ class OtherUserProfileScreen extends GetView<OtherProfileController> {
             decoration: const BoxDecoration(color: ThemeColor.backgroundColor),
             child: Scaffold(
               backgroundColor: ThemeColor.backgroundColor,
-              appBar: topHeaderWithBackIcon("profile_title".tr),
+              appBar: topHeaderWithBackIcon("Profile".tr),
               body: SafeArea(
                   child: Column(
                     children: [buildCarDetail(controller,context)],
@@ -101,11 +101,13 @@ class OtherUserProfileScreen extends GetView<OtherProfileController> {
                 text: controller.buttonText.value,
                 fontSize: AppConstant.buttonSize,
                 onTap: () {
-                   if(controller.requestStatus.value == 0){
+                  print("Tap"+"Tap");
+                  controller.redirectToChatScreen();
+                 /*  if(controller.requestStatus.value == 0){
                     controller.sendFollowRequest();
                   }else if(controller.requestStatus.value == 1){
                     controller.requestSendAlready();
-                  }
+                  }*/
                 },
               ),
             )),

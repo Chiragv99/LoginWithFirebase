@@ -6,6 +6,7 @@ import 'package:focus_detector/focus_detector.dart';
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/models/setMyBlogModel.dart';
 import 'package:loginwithfirebase/screens/myblog/myblog_controller.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../uttils/appConstant.dart';
 class MyBlogScreen extends GetView<MyBlogController>{
@@ -32,7 +33,7 @@ class MyBlogScreen extends GetView<MyBlogController>{
             appBar: AppBar(
               title: const Text('Firebase Data Example'),
             ),
-            body:  Obx(() => controller.isLoading.value == true ? const CircularProgressIndicator() : getMyBlog(controller,context)),
+            body:  Obx(() => controller.isLoading.value == true ? loadShimmer() : getMyBlog(controller,context)),
           ),
         ));
 
@@ -172,3 +173,22 @@ Widget setLoading(){
      },
    );
  }
+
+loadShimmer(){
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: ListView.builder(
+      itemCount: 5, // Adjust the count based on your needs
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Container(
+            height: 300,
+            width: 200,
+            color: Colors.white,
+          ),
+        );
+      },
+    ),
+  );
+}

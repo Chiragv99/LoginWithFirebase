@@ -44,6 +44,7 @@ class LoginController extends GetxController{
     var email = emailController.text.toString().trim();
     var password = passwordController.text.toString().trim();
 
+
     if(email.isEmpty){
       showSnakeBar(buildContext, "Please Enter Your Email!");
     }else if(Validation.validateEmail(email) != null){
@@ -51,13 +52,11 @@ class LoginController extends GetxController{
     }else if(password.isEmpty){
       showSnakeBar(buildContext, "Please Enter Your Password!");
     }else{
+      isLoading.value = true;
      var message =  await AuthService().loginWithFirebase(email, password);
-     if(message != null){
-       isLoading.value = false;
-     }
 
      if(message == success){
-
+       isLoading.value = false;
        final FirebaseAuth auth = FirebaseAuth.instance;
        final User? user = auth.currentUser;
        final uid = user?.uid;
@@ -69,6 +68,7 @@ class LoginController extends GetxController{
          Get.offAndToNamed(Routes.tabBarScreen);
      }
      else{
+       isLoading.value = false;
        showSnakeBar(buildContext, message.toString());
      }
     }

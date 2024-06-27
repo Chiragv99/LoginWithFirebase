@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:loginwithfirebase/uttils/theme_color.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Utils {
   void toastMessage(String message) {
@@ -71,4 +72,23 @@ DateTime changeDateFormate(String strDate) {
   var outputFormat = DateFormat('dd-MM-yyyy');
   var outputDate = outputFormat.format(inputDate);
   return DateFormat("dd-MM-yyyy").parse(outputDate).toLocal();
+}
+
+loadShimmer(double height){
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: ListView.builder(
+      itemCount: 5, // Adjust the count based on your needs
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Container(
+            height: height,
+            width: 200,
+            color: Colors.white,
+          ),
+        );
+      },
+    ),
+  );
 }

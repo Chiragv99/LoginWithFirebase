@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:loginwithfirebase/common/tabbar_binding.dart';
 import 'package:loginwithfirebase/common/tabbar_screen.dart';
+import 'package:loginwithfirebase/screens/chat/chat_binding.dart';
+import 'package:loginwithfirebase/screens/chat/chat_screen.dart';
 import 'package:loginwithfirebase/screens/home/home_binding.dart';
 import 'package:loginwithfirebase/screens/home/home_screen.dart';
 import 'package:loginwithfirebase/screens/login/login_binding.dart';
@@ -19,6 +21,8 @@ import 'package:loginwithfirebase/screens/registration/registration_binding.dart
 import 'package:loginwithfirebase/screens/registration/registration_screen.dart';
 import 'package:loginwithfirebase/screens/setting/setting_binding.dart';
 import 'package:loginwithfirebase/screens/setting/setting_screen.dart';
+import 'package:loginwithfirebase/screens/test/test_binding.dart';
+import 'package:loginwithfirebase/screens/test/test_screen.dart';
 
 import '../screens/profile/otherprofile/otherprofile_screen.dart';
 import '../screens/profile/profile_binding.dart';
@@ -36,8 +40,10 @@ class Routes{
   static String profileScreen = "/profileScreen";
   static String myBlog = "/myblogscreen";
   static String blogDetail = "/blogDetail";
-  static String otherprofile = "/OtherProfile";
-  static String followrequest = "/FollowRequestScreen";
+  static String otherProfile = "/OtherProfile";
+  static String followRequest = "/FollowRequestScreen";
+  static String testPage = "/TestScreen";
+  static String chatPage = "/ChatScreen";
 
   static final routes = [
     GetPage(
@@ -91,14 +97,24 @@ class Routes{
         binding: BlogDetailBindings()
     ),
     GetPage(
-        name: otherprofile,
+        name: otherProfile,
         page: () =>  OtherUserProfileScreen(),
         binding: OtherProfileBinding()
     ),
     GetPage(
-        name: followrequest,
+        name: followRequest,
         page: () =>  FollowRequestScreen(),
         binding: FollowRequestBindings()
+    ),
+    GetPage(
+        name: testPage,
+        page: () =>  const TestScreen(),
+        binding: TestBindings()
+    ),
+    GetPage(
+        name: chatPage,
+        page: () =>   ChatScreen(),
+        binding: ChatBindings()
     ),
   ];
 }

@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:loginwithfirebase/uttils/uttils.dart';
 
 import '../../../models/setProfileData.dart';
+import '../../../routes/app_routes.dart';
 import '../../../uttils/appConstant.dart';
 import '../../../uttils/preferenceUtils.dart';
 
@@ -78,6 +79,11 @@ class OtherProfileController extends GetxController{
     });
   }
 
+  void redirectToChatScreen(){
+   print("Chat"+"Chat");
+//   Get.offAndToNamed(Routes.chatPage);
+   Get.toNamed(Routes.chatPage,arguments: {"receiverName": userName.value,"receiverId":  receiverUserId.value,'senderId': senderUserId.value});
+  }
   void requestSendAlready(){
     Utils().toastMessage("Request has been already sent!");
   }
@@ -94,14 +100,17 @@ class OtherProfileController extends GetxController{
         var status = value["status"];
        // print("Status"+ status);
         if(status == 0){
-          requestStatus.value = 1 ;
+          requestStatus.value = 0 ;
           buttonText.value = "Requested";
         }
         if(status == 1){
-          requestStatus.value = 2 ;
+          requestStatus.value = 1 ;
           buttonText.value = "Following";
         }
-
+        if(status == 2){
+          requestStatus.value = 2 ;
+          buttonText.value = "Chat";
+        }
         print("Data"+ "Has Data" + status.toString());
       });
       if(values !=null){

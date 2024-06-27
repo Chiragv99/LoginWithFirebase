@@ -104,4 +104,6 @@ static var updateRouteStatusReadyToGo = 1 ;
  static const firebaseStorageUserData = 'User';
  static const firebaseStorageBlogComment = 'Comment';
  static const firebaseStorageUserFollowData = 'Follow';
+ static const firebaseStorageUserSavedBlog = 'Saved';
+ static const firebaseStorageUserChat = 'Chat';
 }

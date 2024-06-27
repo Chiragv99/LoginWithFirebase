@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:loginwithfirebase/screens/home/home_controller.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:loginwithfirebase/uttils/appConstant.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../models/setMyBlogModel.dart';
 
@@ -17,7 +18,7 @@ class HomeScreen extends GetView<HomeController>{
     return FocusDetector(
        onFocusGained: (){
         // controller.readData();
-       //  controller.getAllUserPost();
+         controller.getAllUserPost();
        },
       onFocusLost: (){},
       child:   MaterialApp(
@@ -25,7 +26,7 @@ class HomeScreen extends GetView<HomeController>{
     appBar: AppBar(
     title: const Text('Firebase Data Example'),
     ),
-    body:  Obx(() => controller.isLoading.value == true ? const CircularProgressIndicator() : getAllPost(controller,context)),
+    body:  Obx(() => controller.isLoading.value == true ? loadShimmer() : getAllPost(controller,context)),
     ),
     ));
   }
@@ -53,7 +54,8 @@ class HomeScreen extends GetView<HomeController>{
 
 
   getAllPost(HomeController controller, BuildContext context) {
-    return ListView.builder(
+    return
+      ListView.builder(
         shrinkWrap: false,
         itemCount: controller.listAllBlog.value.length,
         itemBuilder: (BuildContext context, int index){
@@ -216,7 +218,7 @@ void addPostLike(SetMyBlogModel setMyBlogModel, HomeController controller) {
     tempOutput.add(controller.userId.value);
   }
 
-  print("Contain" + tempOutput.contains(controller.userId.value).toString());
+  print("Contain${tempOutput.contains(controller.userId.value)}");
 
   print("Blog$tempOutput");
   blogDataRef.child(setMyBlogModel.blogId).update({
@@ -227,3 +229,21 @@ void addPostLike(SetMyBlogModel setMyBlogModel, HomeController controller) {
     print("AddLike$error");
   });
 }
+loadShimmer(){
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: ListView.builder(
+      itemCount: 5, // Adjust the count based on your needs
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Container(
+            height: 200,
+            width: 200,
+            color: Colors.white,
+          ),
+        );
+      },
+    ),
+  );
+ }
